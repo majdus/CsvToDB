@@ -20,6 +20,16 @@
 # Go workspace file
 go.work
 go.work.sum
+go.sum
 
 # env file
 .env
+
+# IDE
+.idea
+
+# Database
+*.db
+
+# data
+file.csv
