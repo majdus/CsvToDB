@@ -7,12 +7,14 @@ import (
 )
 
 var args struct {
-	Csv string `arg:"required"`
+	Csv        string `arg:"required"`
+	PrimaryKey string
 }
 
 func main() {
 	arg.MustParse(&args)
 	filePath := args.Csv
+	primaryKey := args.PrimaryKey
 
 	_, err := os.Stat(filePath)
 	if err != nil {
@@ -31,7 +33,7 @@ func main() {
 
 	log.Printf("%d lines Collected.\n", len(data.Lines))
 
-	insertedLines, err := StoreDataInSqliteDB(data)
+	insertedLines, err := StoreDataInSqliteDB(data, &primaryKey)
 	if err != nil {
 		log.Fatalf("Error storing data in the database")
 	}

@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func StoreDataInSqliteDB(data *Data) (int, error) {
+func StoreDataInSqliteDB(data *Data, primaryKey *string) (int, error) {
 	db, err := sql.Open("sqlite3", "./data.db")
 	if err != nil {
 		log.Fatalf("Failed to open database: %v", err)
@@ -23,7 +23,11 @@ func StoreDataInSqliteDB(data *Data) (int, error) {
 
 	var columns []string
 	for key := range data.Lines[0] {
-		columns = append(columns, fmt.Sprintf("%s TEXT", key))
+		if len(*primaryKey) > 0 && key == *primaryKey {
+			columns = append(columns, fmt.Sprintf("%s TEXT PRIMARY KEY", key))
+		} else {
+			columns = append(columns, fmt.Sprintf("%s TEXT", key))
+		}
 	}
 
 	stmt, err := db.Prepare(fmt.Sprintf(`CREATE TABLE IF NOT EXISTS data_table (%s)`, strings.Join(columns, ", ")))
