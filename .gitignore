@@ -33,3 +33,10 @@ go.sum
 
 # data
 file.csv
+
+# Build
+node_modules
+
+#internal
+package-lock.json
+package.json
